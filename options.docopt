@@ -1,0 +1,10 @@
+forcman - manage Procfile-based apps
+
+Usage:
+  forcman start
+  forcman ( -h | --help )
+  forcman --version
+
+Options:
+  -h --help        Show this screen.
+  --version        Show version.
