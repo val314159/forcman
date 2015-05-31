@@ -34,20 +34,26 @@ void start(const char *line0[]){
   }
 }
 
-int main(){
-  DocoptArgs args = docopt(argc, argv, /* help */ 1, /* version */ "2.0rc2");
+int main(int argc, char *argv[]){
+  DocoptArgs args = docopt(argc, argv, /* help */ 1, /* version */ "1.0.0");
 
   setbuf(stdout,0);
 
-  start(line0);
-  start(line1);
-  start(line2);
-  start(line3);
+  printf("%d\n", args.start);
 
-  while (1) {
-    int ret, pid = wait(&ret);
-    printf("ret=%d / pid=%d\n", ret, pid);
-    if (!ret) { run(mm[pid]); }
-    else      { sleep(1); }
+  if (args.start) {
+
+    start(line0);
+    start(line1);
+    start(line2);
+    start(line3);
+
+    while (1) {
+      int ret, pid = wait(&ret);
+      printf("ret=%d / pid=%d\n", ret, pid);
+      if (!ret) { start(mm[pid]); }
+      else      { sleep(1); }
+    }
   }
+
 }
