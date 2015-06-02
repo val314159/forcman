@@ -13,6 +13,8 @@
 typedef struct {
     /* commands */
     int start;
+    /* arguments */
+    char *group;
     /* options without arguments */
     int help;
     int version;
@@ -25,18 +27,19 @@ const char help_message[] =
 "forcman - manage Procfile-based apps\n"
 "\n"
 "Usage:\n"
-"  forcman start\n"
+"  forcman [ -u ] start [<group>]\n"
 "  forcman ( -h | --help )\n"
 "  forcman --version\n"
 "\n"
 "Options:\n"
 "  -h --help        Show this screen.\n"
+"  -u --unbuffered  Don't buffer stdout.\n"
 "  --version        Show version.\n"
 "";
 
 const char usage_pattern[] =
 "Usage:\n"
-"  forcman start\n"
+"  forcman [options] start [<group>]\n"
 "  forcman ( -h | --help )\n"
 "  forcman --version";
 
@@ -269,6 +272,9 @@ int elems_to_args(Elements *elements, DocoptArgs *args, bool help,
     /* arguments */
     for (i=0; i < elements->n_arguments; i++) {
         argument = &elements->arguments[i];
+        if (!strcmp(argument->name, "<group>")) {
+            args->group = argument->value;
+        }
     }
     return 0;
 }
@@ -280,7 +286,7 @@ int elems_to_args(Elements *elements, DocoptArgs *args, bool help,
 
 DocoptArgs docopt(int argc, char *argv[], bool help, const char *version) {
     DocoptArgs args = {
-        0, 0, 0,
+        0, NULL, 0, 0,
         usage_pattern, help_message
     };
     Tokens ts;
@@ -288,12 +294,13 @@ DocoptArgs docopt(int argc, char *argv[], bool help, const char *version) {
         {"start", 0}
     };
     Argument arguments[] = {
+        {"<group>", NULL, NULL}
     };
     Option options[] = {
         {"-h", "--help", 0, 0, NULL},
         {NULL, "--version", 0, 0, NULL}
     };
-    Elements elements = {1, 0, 2, commands, arguments, options};
+    Elements elements = {1, 1, 2, commands, arguments, options};
 
     ts = tokens_new(argc, argv);
     if (parse_args(&ts, &elements))

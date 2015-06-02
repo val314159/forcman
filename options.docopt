@@ -1,10 +1,11 @@
 forcman - manage Procfile-based apps
 
 Usage:
-  forcman start
+  forcman [options] start [<group>]
   forcman ( -h | --help )
   forcman --version
 
 Options:
   -h --help        Show this screen.
+  -u --unbuffered  Don't buffer stdout.
   --version        Show version.

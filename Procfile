@@ -1,3 +1,4 @@
-web: python -mSimpleHTTPServer 8000
-echo1: sleep 1; echo HELLO1
-echo2: sleep 2; echo HELLO2
+web1: python -mSimpleHTTPServer 8001
+web2: python -mSimpleHTTPServer 8002
+web3: python -mSimpleHTTPServer 8003
+web4: python -mSimpleHTTPServer 8004
