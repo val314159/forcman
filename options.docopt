@@ -1,7 +1,7 @@
 forcman - manage Procfile-based apps
 
 Usage:
-  forcman [options] start [<group>]
+  forcman [ -u ] start [<group>]
   forcman ( -h | --help )
   forcman --version
 

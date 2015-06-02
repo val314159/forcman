@@ -17,6 +17,7 @@ typedef struct {
     char *group;
     /* options without arguments */
     int help;
+    int unbuffered;
     int version;
     /* special */
     const char *usage_pattern;
@@ -39,7 +40,7 @@ const char help_message[] =
 
 const char usage_pattern[] =
 "Usage:\n"
-"  forcman [options] start [<group>]\n"
+"  forcman [ -u ] start [<group>]\n"
 "  forcman ( -h | --help )\n"
 "  forcman --version";
 
@@ -258,6 +259,8 @@ int elems_to_args(Elements *elements, DocoptArgs *args, bool help,
             return 1;
         } else if (!strcmp(option->olong, "--help")) {
             args->help = option->value;
+        } else if (!strcmp(option->olong, "--unbuffered")) {
+            args->unbuffered = option->value;
         } else if (!strcmp(option->olong, "--version")) {
             args->version = option->value;
         }
@@ -286,7 +289,7 @@ int elems_to_args(Elements *elements, DocoptArgs *args, bool help,
 
 DocoptArgs docopt(int argc, char *argv[], bool help, const char *version) {
     DocoptArgs args = {
-        0, NULL, 0, 0,
+        0, NULL, 0, 0, 0,
         usage_pattern, help_message
     };
     Tokens ts;
@@ -298,9 +301,10 @@ DocoptArgs docopt(int argc, char *argv[], bool help, const char *version) {
     };
     Option options[] = {
         {"-h", "--help", 0, 0, NULL},
+        {"-u", "--unbuffered", 0, 0, NULL},
         {NULL, "--version", 0, 0, NULL}
     };
-    Elements elements = {1, 1, 2, commands, arguments, options};
+    Elements elements = {1, 1, 3, commands, arguments, options};
 
     ts = tokens_new(argc, argv);
     if (parse_args(&ts, &elements))

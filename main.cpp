@@ -86,12 +86,13 @@ void waitForRestarts() {
 }
 
 int main(int argc, char *argv[]){
-  args = docopt(argc, argv, 1, "1.0.0");
+  args = docopt(argc, argv, 1, "1.0.1");
   if (args.unbuffered)
     setbuf(stdout,0);
-  printf("%d\n", args.start);
   if (args.start) {
     if (!parseProcfile("Procfile"))
       waitForRestarts();
+  } else {
+    fprintf(stderr, help_message);
   }
 }
