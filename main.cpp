@@ -39,7 +39,7 @@ int parseProcfile(const char*procfilename=0) {
   char buf[10241];
   char *c = 0;
   memset(buf, 0, 10241);
-  while (c = fgets(buf, 10240, f)) {
+  while((c = fgets(buf, 10240, f))){
     c = strdup(c);
 
     char *colon=0;
